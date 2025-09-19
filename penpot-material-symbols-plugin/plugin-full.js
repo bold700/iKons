@@ -45,12 +45,12 @@ class MaterialSymbolsPlugin {
         });
         
         // Options controls
-        const fillToggle = document.getElementById('fillToggle');
+        const fillSlider = document.getElementById('fillSlider');
         const weightSelect = document.getElementById('weightSelect');
         const sizeInput = document.getElementById('sizeInput');
         
-        fillToggle.addEventListener('change', (e) => {
-            this.currentOptions.fill = e.target.checked ? 1 : 0;
+        fillSlider.addEventListener('input', (e) => {
+            this.currentOptions.fill = parseFloat(e.target.value);
             this.updateIconStyles();
         });
         
