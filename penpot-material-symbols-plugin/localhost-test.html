@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Localhost Plugin Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .test { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; }
+        .error { background: #f8d7da; border-left: 4px solid #dc3545; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        pre { background: #e9ecef; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .url { font-family: monospace; background: #e9ecef; padding: 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Localhost Plugin Test</h1>
+    
+    <div class="test">
+        <h3>🎯 Test Localhost URLs</h3>
+        <button onclick="testManifest()">Test Manifest.json</button>
+        <button onclick="testPlugin()">Test Plugin Interface</button>
+        <button onclick="testAllFiles()">Test All Files</button>
+    </div>
+
+    <div id="results"></div>
+
+    <div class="test">
+        <h3>📋 Voor Penpot:</h3>
+        <p>Als localhost test slaagt, gebruik deze URL in Penpot:</p>
+        <div class="url">http://localhost:8080/manifest.json</div>
+    </div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+
+        async function testManifest() {
+            resultsDiv.innerHTML = '<div class="test">🔄 Testing manifest.json...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8080/manifest.json', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    const manifest = await response.json();
+                    resultsDiv.innerHTML = `
+                        <div class="test success">
+                            <h3>✅ Manifest.json Werkt!</h3>
+                            <pre>${JSON.stringify(manifest, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="test error">
+                        <h3>❌ Manifest.json Error</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Controleer of de server draait op localhost:8080</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testPlugin() {
+            resultsDiv.innerHTML = '<div class="test">🔄 Testing plugin interface...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8080/index.html');
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    const hasPluginContent = html.includes('Material Symbols') && html.includes('search');
+                    
+                    if (hasPluginContent) {
+                        resultsDiv.innerHTML = `
+                            <div class="test success">
+                                <h3>✅ Plugin Interface Werkt!</h3>
+                                <p>HTML bevat Material Symbols content</p>
+                                <p><a href="http://localhost:8080/index.html" target="_blank">Open Plugin Interface</a></p>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error('Plugin content not found in HTML');
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="test error">
+                        <h3>❌ Plugin Interface Error</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function testAllFiles() {
+            const files = ['manifest.json', 'index.html', 'plugin.js', 'icon.svg'];
+            let results = '<div class="test"><h3>🔄 Testing All Files...</h3>';
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(`http://localhost:8080/${file}`);
+                    if (response.ok) {
+                        results += `<p>✅ ${file} - OK (${response.status})</p>`;
+                    } else {
+                        results += `<p>❌ ${file} - Error ${response.status}</p>`;
+                    }
+                } catch (error) {
+                    results += `<p>❌ ${file} - Network Error</p>`;
+                }
+            }
+            
+            results += '</div>';
+            resultsDiv.innerHTML = results;
+        }
+
+        // Auto-test manifest on load
+        setTimeout(testManifest, 1000);
+    </script>
+</body>
+</html>

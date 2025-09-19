@@ -1,0 +1,20 @@
+/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization
+
+/manifest.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/index.html
+  Content-Type: text/html
+  Access-Control-Allow-Origin: *
+
+/plugin.js
+  Content-Type: application/javascript
+  Access-Control-Allow-Origin: *
+
+/icon.svg
+  Content-Type: image/svg+xml
+  Access-Control-Allow-Origin: *

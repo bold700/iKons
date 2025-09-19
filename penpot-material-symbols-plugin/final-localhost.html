@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎯 Final Localhost Solution</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .success { background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; margin: 20px 0; }
+        .warning { background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107; margin: 20px 0; }
+        .url { font-family: monospace; background: #e9ecef; padding: 12px; border-radius: 3px; margin: 10px 0; word-break: break-all; font-size: 16px; font-weight: bold; text-align: center; }
+        button { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; margin: 10px 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .step { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 3px solid #6c757d; }
+        h1 { color: #28a745; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Final Localhost Solution</h1>
+    
+    <div class="success">
+        <h3>✅ Server Status: ACTIEF</h3>
+        <p><strong>Server:</strong> http://127.0.0.1:3001</p>
+        <p><strong>Manifest:</strong> Geladen en getest</p>
+        <p><strong>CORS:</strong> Basis HTTP server (soms werkt dit beter)</p>
+    </div>
+
+    <div class="step">
+        <h3>🚀 Probeer Deze URLs in Penpot:</h3>
+        
+        <p><strong>Optie 1 (Aanbevolen):</strong></p>
+        <div class="url" id="url1">http://127.0.0.1:3001/manifest.json</div>
+        <button onclick="copyUrl('url1')">📋 Kopieer Optie 1</button>
+        <button onclick="testUrl('http://127.0.0.1:3001/manifest.json')">🧪 Test</button>
+        
+        <p><strong>Optie 2 (Backup):</strong></p>
+        <div class="url" id="url2">http://localhost:3001/manifest.json</div>
+        <button onclick="copyUrl('url2')">📋 Kopieer Optie 2</button>
+        <button onclick="testUrl('http://localhost:3001/manifest.json')">🧪 Test</button>
+    </div>
+
+    <div class="step">
+        <h3>📋 Penpot Installatie:</h3>
+        <ol>
+            <li>Ga naar <a href="https://design.penpot.app" target="_blank">Penpot</a> 🔗</li>
+            <li>Druk <kbd>Ctrl + Alt + P</kbd> (Windows) of <kbd>Cmd + Alt + P</kbd> (Mac)</li>
+            <li>Plak een van de URLs hierboven</li>
+            <li>Klik "INSTALLEREN"</li>
+            <li>Plugin verschijnt als "Material Symbols"</li>
+        </ol>
+    </div>
+
+    <div class="warning">
+        <h3>⚠️ Als Localhost Niet Werkt:</h3>
+        <p>Sommige browsers/Penpot versies blokkeren localhost om beveiligingsredenen.</p>
+        <p><strong>Alternatief:</strong> Gebruik GitHub Pages</p>
+        <div class="url">https://bold700.github.io/iKons/manifest.json</div>
+        <button onclick="copyToClipboard('https://bold700.github.io/iKons/manifest.json')">📋 Kopieer GitHub URL</button>
+    </div>
+
+    <div id="test-results" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0;">
+        <h4>Test Resultaten:</h4>
+        <div id="test-content"></div>
+    </div>
+
+    <script>
+        function copyUrl(elementId) {
+            const url = document.getElementById(elementId).textContent;
+            copyToClipboard(url);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ URL gekopieerd!\n\nGa naar Penpot en plak deze in Plugin Manager (Ctrl+Alt+P)');
+            }).catch(() => {
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ URL gekopieerd!');
+            });
+        }
+
+        async function testUrl(url) {
+            const resultsDiv = document.getElementById('test-results');
+            const contentDiv = document.getElementById('test-content');
+            
+            resultsDiv.style.display = 'block';
+            contentDiv.innerHTML = `🔄 Testing ${url}...`;
+            
+            try {
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const manifest = await response.json();
+                    contentDiv.innerHTML = `
+                        <div style="color: green;">
+                            <strong>✅ ${url} werkt!</strong><br>
+                            Plugin: ${manifest.name}<br>
+                            Version: ${manifest.version}<br>
+                            <strong>Deze URL zou moeten werken in Penpot!</strong>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                contentDiv.innerHTML = `
+                    <div style="color: red;">
+                        <strong>❌ ${url} werkt niet</strong><br>
+                        Error: ${error.message}<br>
+                        Probeer de andere URL of gebruik GitHub Pages.
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-test beide URLs
+        setTimeout(() => {
+            testUrl('http://127.0.0.1:3001/manifest.json');
+        }, 1000);
+    </script>
+</body>
+</html>

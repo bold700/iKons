@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plugin Proxy Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .result { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; }
+        .error { background: #f8d7da; border-left: 4px solid #dc3545; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .url-box { background: #e9ecef; padding: 10px; border-radius: 3px; font-family: monospace; margin: 10px 0; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Plugin Proxy Test</h1>
+    
+    <div class="result">
+        <h3>💡 Het Probleem:</h3>
+        <p>Je localhost:8080 werkt perfect, maar Penpot kan het niet bereiken vanwege HTTPS/HTTP mixed content restricties.</p>
+    </div>
+
+    <div class="result">
+        <h3>🚀 Snelle Oplossingen:</h3>
+        
+        <h4>1. GitHub Pages (Beste optie)</h4>
+        <p>Wacht nog 5-10 minuten en probeer:</p>
+        <div class="url-box">https://bold700.github.io/iKons/manifest.json</div>
+        <button onclick="testGitHub()">Test GitHub Nu</button>
+        
+        <h4>2. Netlify Drop (2 minuten)</h4>
+        <p>1. Ga naar <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></p>
+        <p>2. Sleep material-symbols-plugin.zip erop</p>
+        <p>3. Gebruik de gegenereerde URL</p>
+        
+        <h4>3. Manual Copy-Paste</h4>
+        <p>Kopieer je plugin bestanden naar een publieke webserver.</p>
+    </div>
+
+    <div id="test-results"></div>
+
+    <div class="result">
+        <h3>📋 Je Localhost Bestanden:</h3>
+        <ul>
+            <li>✅ http://localhost:8080/manifest.json</li>
+            <li>✅ http://localhost:8080/index.html</li>
+            <li>✅ http://localhost:8080/plugin.js</li>
+            <li>✅ http://localhost:8080/icon.svg</li>
+        </ul>
+        <p><strong>Deze werken perfect lokaal, maar hebben HTTPS nodig voor Penpot!</strong></p>
+    </div>
+
+    <script>
+        function testGitHub() {
+            const url = 'https://bold700.github.io/iKons/manifest.json';
+            const resultsDiv = document.getElementById('test-results');
+            
+            resultsDiv.innerHTML = '<div class="result">🔄 Testing GitHub Pages...</div>';
+            
+            fetch(url, { mode: 'cors' })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(`HTTP ${response.status}`);
+                })
+                .then(data => {
+                    resultsDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>🎉 GitHub Pages Werkt!</h3>
+                            <p><strong>Gebruik deze URL in Penpot:</strong></p>
+                            <div class="url-box">${url}</div>
+                            <button onclick="copyToClipboard('${url}')">Kopieer URL</button>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    resultsDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ GitHub Pages Nog Niet Klaar</h3>
+                            <p>Error: ${error.message}</p>
+                            <p>Probeer over 5-10 minuten opnieuw.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('URL gekopieerd! Plak deze in Penpot Plugin Manager.');
+            });
+        }
+
+        // Auto-test na 3 seconden
+        setTimeout(testGitHub, 3000);
+    </script>
+</body>
+</html>

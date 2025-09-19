@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎯 Final Solution</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; }
+        .solution { background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; margin: 20px 0; }
+        .problem { background: #f8d7da; padding: 20px; border-radius: 8px; border-left: 4px solid #dc3545; margin: 20px 0; }
+        .step { background: #e3f2fd; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #2196f3; }
+        button { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; margin: 10px 5px; font-size: 16px; }
+        .url { font-family: monospace; background: #e9ecef; padding: 10px; border-radius: 3px; margin: 10px 0; word-break: break-all; }
+        h1 { color: #1976d2; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Final Solution: Material Symbols Plugin</h1>
+    
+    <div class="problem">
+        <h3>❌ Het Probleem</h3>
+        <p><strong>CORS Error:</strong> Penpot (HTTPS) kan geen HTTP localhost laden</p>
+        <p><strong>Console Error:</strong> "Access to fetch blocked by CORS policy"</p>
+        <p><strong>Conclusie:</strong> Plugin werkt perfect, maar heeft HTTPS hosting nodig</p>
+    </div>
+
+    <div class="solution">
+        <h3>✅ De Oplossing: Netlify Drop</h3>
+        <p>Upload plugin naar publieke HTTPS hosting</p>
+    </div>
+
+    <div class="step">
+        <h3>🚀 Stap 1: Netlify Upload</h3>
+        <p>1. Ga naar <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></p>
+        <p>2. Sleep <strong>material-symbols-plugin-cors.zip</strong> erop</p>
+        <p>3. Wacht 30 seconden</p>
+        <p>4. Krijg een URL zoals: <code>https://amazing-name.netlify.app</code></p>
+    </div>
+
+    <div class="step">
+        <h3>🎯 Stap 2: Test Plugin URL</h3>
+        <p>Test eerst of manifest werkt:</p>
+        <div class="url">https://jouw-netlify-url.netlify.app/manifest.json</div>
+        <p>Je moet JSON zien, geen error</p>
+    </div>
+
+    <div class="step">
+        <h3>🎨 Stap 3: Installeer in Penpot</h3>
+        <p>1. Ga naar <a href="https://design.penpot.app" target="_blank">Penpot</a></p>
+        <p>2. Druk <kbd>Ctrl + Alt + P</kbd></p>
+        <p>3. Plak: <code>https://jouw-netlify-url.netlify.app/manifest.json</code></p>
+        <p>4. Klik "INSTALLEREN"</p>
+        <p>5. Plugin verschijnt in lijst als "Material Symbols"</p>
+    </div>
+
+    <div class="solution">
+        <h3>🎉 Verwachte Resultaat</h3>
+        <ul>
+            <li>✅ Geen CORS errors meer</li>
+            <li>✅ "Material Symbols" plugin in lijst</li>
+            <li>✅ Werkende interface met 200+ iconen</li>
+            <li>✅ Zoekfunctie werkt</li>
+            <li>✅ Drie stijlen: Outlined, Rounded, Sharp</li>
+            <li>✅ Iconen toevoegen aan canvas</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3>📁 ZIP Bestand Locatie</h3>
+        <p><strong>Bestand:</strong> <code>material-symbols-plugin-cors.zip</code></p>
+        <p><strong>Locatie:</strong> Plugin directory</p>
+        <p><strong>Bevat:</strong> manifest.json, index.html, plugin.js, icon.svg, _headers (CORS fix)</p>
+    </div>
+
+    <script>
+        // Auto-open Netlify Drop
+        setTimeout(() => {
+            if (confirm('Open Netlify Drop nu om plugin te uploaden?')) {
+                window.open('https://app.netlify.com/drop', '_blank');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

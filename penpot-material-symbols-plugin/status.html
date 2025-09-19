@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plugin Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .status { background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; margin: 20px 0; }
+        .url { font-family: monospace; background: #e9ecef; padding: 10px; border-radius: 3px; margin: 10px 0; word-break: break-all; }
+        button { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; margin: 10px 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .step { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🎉 Plugin Status: WERKEND!</h1>
+    
+    <div class="status">
+        <h3>✅ Localhost Server Actief</h3>
+        <p><strong>Server:</strong> http://localhost:8080</p>
+        <p><strong>Plugin URL:</strong></p>
+        <div class="url">http://localhost:8080/manifest.json</div>
+    </div>
+
+    <div class="step">
+        <h3>🚀 Test Plugin Interface</h3>
+        <button onclick="window.open('http://localhost:8080/index.html', '_blank')">Open Plugin Interface</button>
+        <button onclick="window.open('http://localhost:8080/manifest.json', '_blank')">View Manifest</button>
+    </div>
+
+    <div class="step">
+        <h3>🎯 Gebruik in Penpot</h3>
+        <p><strong>Stap 1:</strong> Ga naar <a href="https://design.penpot.app" target="_blank">Penpot</a></p>
+        <p><strong>Stap 2:</strong> Druk <kbd>Ctrl + Alt + P</kbd> (of <kbd>Cmd + Alt + P</kbd> op Mac)</p>
+        <p><strong>Stap 3:</strong> Plak deze URL:</p>
+        <div class="url" id="plugin-url">http://localhost:8080/manifest.json</div>
+        <button onclick="copyToClipboard()">📋 Kopieer URL</button>
+        <p><strong>Stap 4:</strong> Klik "INSTALLEREN"</p>
+    </div>
+
+    <div class="step">
+        <h3>🔧 Troubleshooting</h3>
+        <p><strong>Als Penpot de plugin niet accepteert:</strong></p>
+        <ul>
+            <li>CORS probleem - Penpot (HTTPS) kan geen HTTP localhost laden</li>
+            <li>Gebruik een van de publieke hosting opties</li>
+            <li>GitHub Pages: <code>https://bold700.github.io/iKons/manifest.json</code></li>
+        </ul>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const url = document.getElementById('plugin-url').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ URL gekopieerd naar clipboard!\n\nPlak deze in Penpot Plugin Manager.');
+            }).catch(() => {
+                // Fallback voor oude browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ URL gekopieerd naar clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

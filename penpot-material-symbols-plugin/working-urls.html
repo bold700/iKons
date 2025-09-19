@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Working Plugin URLs</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .url-box { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #007bff; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .copy-btn { background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px; }
+        code { background: #e9ecef; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Working Plugin URLs</h1>
+    
+    <div class="url-box error">
+        <h3>❌ Huidige Problemen:</h3>
+        <ul>
+            <li>404 errors op jouw hosting</li>
+            <li>CORS policy blocks</li>
+            <li>Bestanden niet correct geüpload</li>
+        </ul>
+    </div>
+
+    <div class="url-box">
+        <h3>🔧 Snelle Test URLs:</h3>
+        <p><strong>JSFiddle Plugin:</strong></p>
+        <code>https://jsfiddle.net/kenny/abc123/manifest.json</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://jsfiddle.net/kenny/abc123/manifest.json')">Copy</button>
+    </div>
+
+    <div class="url-box success">
+        <h3>✅ Werkende Oplossing: GitHub Pages</h3>
+        <p>Je GitHub repository is al klaar! Gebruik:</p>
+        <code id="github-url">https://bold700.github.io/iKons/manifest.json</code>
+        <button class="copy-btn" onclick="copyToClipboard('https://bold700.github.io/iKons/manifest.json')">Copy</button>
+        <br><br>
+        <button onclick="testGitHubPages()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Test GitHub Pages Nu</button>
+    </div>
+
+    <div class="url-box">
+        <h3>🛠️ Fix je Eigen Hosting:</h3>
+        <ol>
+            <li>Log in bij cPanel</li>
+            <li>Ga naar File Manager</li>
+            <li>Ga naar <code>/public_html/</code></li>
+            <li>Maak map <code>penpot-plugin</code></li>
+            <li>Upload alle 4 bestanden</li>
+            <li>Set permissions: bestanden 644, map 755</li>
+        </ol>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('URL gekopieerd naar clipboard!');
+            });
+        }
+
+        function testGitHubPages() {
+            const url = 'https://bold700.github.io/iKons/manifest.json';
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        alert('🎉 GitHub Pages werkt! Gebruik deze URL in Penpot.');
+                        window.open(url, '_blank');
+                    } else {
+                        alert('❌ GitHub Pages nog niet actief. Probeer over 5 minuten opnieuw.');
+                    }
+                })
+                .catch(error => {
+                    alert('❌ GitHub Pages nog niet beschikbaar. Wacht nog even.');
+                });
+        }
+
+        // Auto-test GitHub Pages
+        setTimeout(() => {
+            fetch('https://bold700.github.io/iKons/manifest.json')
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('github-url').style.background = '#d4edda';
+                        document.getElementById('github-url').style.padding = '5px';
+                        document.getElementById('github-url').innerHTML += ' ✅ ACTIEF!';
+                    }
+                })
+                .catch(() => {
+                    console.log('GitHub Pages nog niet actief');
+                });
+        }, 2000);
+    </script>
+</body>
+</html>

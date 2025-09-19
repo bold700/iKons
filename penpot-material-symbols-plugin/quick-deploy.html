@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snelle Plugin Deployment</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .step { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #007bff; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .warning { border-left-color: #ffc107; background: #fff3cd; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code { background: #f8f9fa; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Snelle Plugin Deployment</h1>
+    
+    <div class="warning">
+        <h3>⚠️ GitHub Pages duurt te lang?</h3>
+        <p>Gebruik Netlify voor onmiddellijke deployment!</p>
+    </div>
+
+    <div class="step">
+        <h3>📦 Stap 1: Download Plugin ZIP</h3>
+        <p>De plugin bestanden zijn al klaar in een ZIP bestand.</p>
+        <p><strong>Locatie:</strong> <code>material-symbols-plugin.zip</code></p>
+    </div>
+
+    <div class="step">
+        <h3>🌐 Stap 2: Netlify Drop</h3>
+        <ol>
+            <li>Ga naar <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></li>
+            <li>Sleep <code>material-symbols-plugin.zip</code> op de pagina</li>
+            <li>Wacht 30 seconden</li>
+            <li>Krijg een URL zoals: <code>https://random-name.netlify.app</code></li>
+        </ol>
+    </div>
+
+    <div class="step success">
+        <h3>✅ Stap 3: Gebruik in Penpot</h3>
+        <p>Gebruik de Netlify URL in Penpot:</p>
+        <p><code>https://random-name.netlify.app/manifest.json</code></p>
+    </div>
+
+    <div class="step">
+        <h3>🔄 Alternatief: Wacht op GitHub Pages</h3>
+        <p>Als je liever GitHub gebruikt, controleer over 5-10 minuten:</p>
+        <p><code>https://bold700.github.io/iKons/manifest.json</code></p>
+    </div>
+
+    <script>
+        // Auto-check GitHub Pages status
+        setTimeout(() => {
+            fetch('https://bold700.github.io/iKons/manifest.json')
+                .then(response => {
+                    if (response.ok) {
+                        document.body.innerHTML += `
+                            <div class="step success">
+                                <h3>🎉 GitHub Pages is nu actief!</h3>
+                                <p>Je kunt nu deze URL gebruiken in Penpot:</p>
+                                <p><strong>https://bold700.github.io/iKons/manifest.json</strong></p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(() => {
+                    console.log('GitHub Pages nog niet beschikbaar');
+                });
+        }, 2000);
+    </script>
+</body>
+</html>

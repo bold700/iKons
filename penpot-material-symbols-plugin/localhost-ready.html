@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎉 Localhost Ready!</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .success { background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745; margin: 20px 0; }
+        .info { background: #e3f2fd; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #2196f3; }
+        .url { font-family: monospace; background: #e9ecef; padding: 10px; border-radius: 3px; margin: 10px 0; word-break: break-all; font-size: 16px; font-weight: bold; }
+        button { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; margin: 10px 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .test-results { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0; }
+        h1 { color: #28a745; }
+    </style>
+</head>
+<body>
+    <h1>🎉 Localhost Plugin Server Ready!</h1>
+    
+    <div class="success">
+        <h3>✅ Penpot-Compatible Server Actief</h3>
+        <p><strong>Server:</strong> http://localhost:3001</p>
+        <p><strong>Enhanced CORS headers:</strong> Ingeschakeld</p>
+        <p><strong>Penpot-specific config:</strong> Actief</p>
+    </div>
+
+    <div class="info">
+        <h3>🎯 Plugin URL voor Penpot:</h3>
+        <div class="url" id="plugin-url">http://localhost:3001/manifest.json</div>
+        <button onclick="copyToClipboard()">📋 Kopieer URL</button>
+        <button onclick="testManifest()">🧪 Test Manifest</button>
+        <button onclick="window.open('http://localhost:3001/index.html', '_blank')">👀 View Plugin</button>
+    </div>
+
+    <div class="info">
+        <h3>🚀 Installeer in Penpot:</h3>
+        <ol>
+            <li>Ga naar <a href="https://design.penpot.app" target="_blank">Penpot</a></li>
+            <li>Druk <kbd>Ctrl + Alt + P</kbd> (of <kbd>Cmd + Alt + P</kbd> op Mac)</li>
+            <li>Plak de URL hierboven</li>
+            <li>Klik "INSTALLEREN"</li>
+        </ol>
+    </div>
+
+    <div id="test-results" class="test-results" style="display: none;">
+        <h4>Test Resultaten:</h4>
+        <div id="test-content"></div>
+    </div>
+
+    <div class="info">
+        <h3>🔧 Server Details:</h3>
+        <ul>
+            <li><strong>Poort:</strong> 3001 (om conflict met andere servers te vermijden)</li>
+            <li><strong>CORS:</strong> Volledig geconfigureerd voor Penpot</li>
+            <li><strong>Headers:</strong> Access-Control-Allow-Origin: *</li>
+            <li><strong>Content-Type:</strong> Correct ingesteld voor alle bestanden</li>
+        </ul>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const url = document.getElementById('plugin-url').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ URL gekopieerd naar clipboard!\n\nGa nu naar Penpot en plak deze URL in de Plugin Manager.');
+            }).catch(() => {
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ URL gekopieerd naar clipboard!');
+            });
+        }
+
+        async function testManifest() {
+            const resultsDiv = document.getElementById('test-results');
+            const contentDiv = document.getElementById('test-content');
+            
+            resultsDiv.style.display = 'block';
+            contentDiv.innerHTML = '🔄 Testing manifest.json...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/manifest.json');
+                
+                if (response.ok) {
+                    const manifest = await response.json();
+                    const headers = Array.from(response.headers.entries())
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join('<br>');
+                    
+                    contentDiv.innerHTML = `
+                        <div style="color: green;">
+                            <strong>✅ Manifest.json werkt perfect!</strong><br><br>
+                            <strong>Plugin Name:</strong> ${manifest.name}<br>
+                            <strong>Version:</strong> ${manifest.version}<br>
+                            <strong>Author:</strong> ${manifest.author}<br><br>
+                            <strong>Response Headers:</strong><br>
+                            <div style="font-family: monospace; font-size: 12px; background: #f0f0f0; padding: 10px; border-radius: 3px;">
+                                ${headers}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                contentDiv.innerHTML = `
+                    <div style="color: red;">
+                        <strong>❌ Error:</strong> ${error.message}<br>
+                        Controleer of de server nog draait.
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-test on load
+        setTimeout(testManifest, 1000);
+    </script>
+</body>
+</html>
