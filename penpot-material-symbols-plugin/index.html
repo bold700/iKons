@@ -86,11 +86,17 @@
         }
 
         .option-group select,
-        .option-group input {
+        .option-group input[type="number"] {
             padding: 2px 4px;
             border: 1px solid #ddd;
             border-radius: 3px;
             font-size: 12px;
+        }
+        
+        .option-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
         }
 
         .icons-container {
@@ -209,10 +215,10 @@
         </div>
 
         <div class="options">
-            <div class="option-group">
-                <label>Fill:</label>
-                <input type="range" id="fillSlider" min="0" max="1" step="0.1" value="0">
-            </div>
+                <div class="option-group">
+                    <label>Fill:</label>
+                    <input type="checkbox" id="fillToggle" value="0">
+                </div>
             <div class="option-group">
                 <label>Weight:</label>
                 <select id="weightSelect">
@@ -240,6 +246,229 @@
 
     <button class="add-button" id="addButton" title="Add selected icon to canvas">+</button>
 
+    <script>
+        // Material Symbols iconen lijst
+        const MATERIAL_SYMBOLS = [
+            'home', 'search', 'menu', 'close', 'settings', 'person', 'favorite', 'share',
+            'download', 'upload', 'edit', 'delete', 'add', 'remove', 'check', 'cancel',
+            'arrow_back', 'arrow_forward', 'arrow_upward', 'arrow_downward',
+            'keyboard_arrow_left', 'keyboard_arrow_right', 'keyboard_arrow_up', 'keyboard_arrow_down',
+            'expand_more', 'expand_less', 'chevron_left', 'chevron_right',
+            'play_arrow', 'pause', 'stop', 'skip_next', 'skip_previous',
+            'volume_up', 'volume_down', 'volume_off', 'volume_mute',
+            'brightness_4', 'brightness_7', 'wb_sunny', 'nights_stay',
+            'wifi', 'bluetooth', 'location_on', 'my_location',
+            'notifications', 'notifications_off', 'email', 'phone',
+            'chat', 'forum', 'message', 'comment',
+            'star', 'star_border', 'star_half', 'grade',
+            'bookmark', 'bookmark_border', 'flag', 'flag_circle',
+            'lock', 'lock_open', 'visibility', 'visibility_off',
+            'refresh', 'sync', 'cached', 'autorenew',
+            'info', 'help', 'warning', 'error',
+            'check_circle', 'cancel_circle', 'radio_button_unchecked', 'radio_button_checked',
+            'check_box', 'check_box_outline_blank', 'indeterminate_check_box',
+            'radio_button_checked', 'radio_button_unchecked', 'toggle_on', 'toggle_off',
+            'shopping_cart', 'shopping_bag', 'store', 'local_grocery_store',
+            'payment', 'credit_card', 'account_balance', 'account_balance_wallet',
+            'work', 'business', 'domain', 'apartment',
+            'school', 'library_books', 'book', 'menu_book',
+            'event', 'event_note', 'schedule', 'access_time',
+            'today', 'date_range', 'calendar_today', 'event_available',
+            'map', 'place', 'room', 'local_parking',
+            'directions', 'directions_car', 'directions_bus', 'directions_walk',
+            'flight', 'train', 'directions_boat', 'motorcycle',
+            'hotel', 'restaurant', 'local_cafe', 'local_bar',
+            'shopping_mall', 'storefront', 'local_hospital', 'local_pharmacy',
+            'fitness_center', 'pool', 'sports_soccer', 'sports_basketball',
+            'music_note', 'music_off', 'headphones', 'speaker',
+            'movie', 'tv', 'computer', 'smartphone',
+            'tablet', 'laptop', 'desktop_windows', 'monitor',
+            'print', 'scanner', 'camera_alt', 'photo_camera',
+            'videocam', 'videocam_off', 'mic', 'mic_off',
+            'security', 'verified_user', 'admin_panel_settings', 'manage_accounts',
+            'person_add', 'group', 'group_add', 'people',
+            'public', 'language', 'translate', 'g_translate',
+            'content_copy', 'content_cut', 'content_paste', 'undo',
+            'redo', 'open_in_new', 'link', 'link_off',
+            'file_download', 'file_upload', 'folder', 'folder_open',
+            'insert_drive_file', 'description', 'article', 'text_snippet',
+            'image', 'image_not_supported', 'video_library', 'photo_library',
+            'collections', 'collections_bookmark', 'bookmark_border', 'bookmarks',
+            'tag', 'label', 'price_tag', 'local_offer',
+            'inventory', 'inventory_2', 'warehouse', 'category',
+            'apps', 'dashboard', 'view_module', 'view_list',
+            'view_comfy', 'view_compact', 'view_stream', 'view_carousel',
+            'filter_list', 'sort', 'sort_by_alpha', 'sort_by_created',
+            'grid_view', 'view_agenda', 'view_day', 'view_week',
+            'timeline', 'schedule', 'history', 'restore',
+            'archive', 'delete_forever', 'delete_sweep', 'clear_all',
+            'more_horiz', 'more_vert', 'more', 'expand_circle_down',
+            'keyboard_double_arrow_down', 'keyboard_double_arrow_up', 'keyboard_double_arrow_left', 'keyboard_double_arrow_right',
+            'north', 'south', 'east', 'west',
+            'north_east', 'north_west', 'south_east', 'south_west',
+            'my_location', 'near_me', 'place', 'where_to_vote',
+            'beenhere', 'flag', 'tour', 'explore',
+            'map', 'terrain', 'satellite', 'layers',
+            'add_location', 'edit_location', 'location_searching', 'location_disabled',
+            'local_fire_department', 'local_police', 'local_hospital', 'local_pharmacy',
+            'local_gas_station', 'local_car_wash', 'local_laundry_service', 'local_atm',
+            'local_grocery_store', 'local_convenience_store', 'local_shipping', 'local_post_office',
+            'local_taxi', 'local_airport', 'local_bus', 'local_subway',
+            'directions_run', 'directions_walk', 'directions_bike', 'directions_car',
+            'directions_bus', 'directions_railway', 'directions_boat', 'directions_transit',
+            'traffic', 'traffic_jam', 'construction', 'build',
+            'handyman', 'plumbing', 'electrical_services', 'cleaning_services',
+            'security', 'shield', 'verified', 'verified_user',
+            'admin_panel_settings', 'manage_accounts', 'supervisor_account', 'group',
+            'person_add', 'person_add_alt', 'group_add', 'people',
+            'support_agent', 'support', 'help_center', 'contact_support',
+            'psychology', 'psychology_alt', 'self_improvement', 'spa',
+            'face', 'sentiment_very_satisfied', 'sentiment_satisfied', 'sentiment_neutral',
+            'sentiment_dissatisfied', 'sentiment_very_dissatisfied', 'mood', 'mood_bad',
+            'emoji_emotions', 'emoji_objects', 'emoji_people', 'emoji_nature',
+            'emoji_food_beverage', 'emoji_transportation', 'emoji_symbols', 'emoji_events',
+            'thumb_up', 'thumb_down', 'thumbs_up_down', 'recommend',
+            'rate_review', 'star_rate', 'star_purple500', 'star_border_purple500',
+            'new_releases', 'new_releases', 'fiber_new', 'fiber_new',
+            'campaign', 'campaign', 'campaign', 'campaign',
+            'record_voice_over', 'record_voice_over', 'record_voice_over', 'record_voice_over',
+            'mic', 'mic_off', 'mic_none', 'mic_external_off',
+            'volume_up', 'volume_down', 'volume_off', 'volume_mute',
+            'headphones', 'headset', 'headset_mic', 'headset_off',
+            'speaker', 'speaker_group', 'surround_sound', 'surround_sound',
+            'equalizer', 'graphic_eq', 'tune', 'equalizer',
+            'music_note', 'music_off', 'library_music', 'queue_music',
+            'playlist_add', 'playlist_play', 'playlist_add_check', 'playlist_add_check_circle',
+            'repeat', 'repeat_on', 'repeat_one', 'repeat_one_on',
+            'shuffle', 'shuffle_on', 'shuffle_on', 'shuffle_on',
+            'skip_previous', 'skip_next', 'fast_rewind', 'fast_forward',
+            'play_arrow', 'pause', 'stop', 'play_circle',
+            'play_circle_outline', 'pause_circle', 'pause_circle_outline', 'stop_circle',
+            'stop_circle_outline', 'play_circle_filled', 'play_circle_outline', 'pause_circle_filled',
+            'pause_circle_outline', 'stop_circle_filled', 'stop_circle_outline', 'play_circle_filled'
+        ];
+
+        // Plugin functionaliteit
+        let currentStyle = 'outlined';
+        let currentFill = 0;
+        let currentWeight = 400;
+        let currentSize = 24;
+        let selectedIcon = null;
+        let filteredIcons = [...MATERIAL_SYMBOLS];
+
+        // DOM elementen
+        const searchInput = document.getElementById('searchInput');
+        const iconsGrid = document.getElementById('iconsGrid');
+        const styleBtns = document.querySelectorAll('.style-btn');
+        const fillToggle = document.getElementById('fillToggle');
+        const weightSelect = document.getElementById('weightSelect');
+        const sizeInput = document.getElementById('sizeInput');
+        const addButton = document.getElementById('addButton');
+
+        // Event listeners
+        searchInput.addEventListener('input', filterIcons);
+        styleBtns.forEach(btn => btn.addEventListener('click', (e) => {
+            styleBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentStyle = e.target.dataset.style;
+            renderIcons();
+        }));
+        fillToggle.addEventListener('change', (e) => {
+            currentFill = e.target.checked ? 1 : 0;
+            updateSelectedIcon();
+        });
+        weightSelect.addEventListener('change', (e) => {
+            currentWeight = parseInt(e.target.value);
+            updateSelectedIcon();
+        });
+        sizeInput.addEventListener('input', (e) => {
+            currentSize = parseInt(e.target.value);
+            updateSelectedIcon();
+        });
+        addButton.addEventListener('click', addIcon);
+
+        // Functies
+        function filterIcons() {
+            const query = searchInput.value.toLowerCase();
+            filteredIcons = MATERIAL_SYMBOLS.filter(icon => 
+                icon.toLowerCase().includes(query)
+            );
+            renderIcons();
+        }
+
+        function renderIcons() {
+            iconsGrid.innerHTML = '';
+            
+            filteredIcons.forEach(iconName => {
+                const iconElement = document.createElement('div');
+                iconElement.className = 'icon-item';
+                iconElement.innerHTML = `
+                    <div class="icon" data-icon="${iconName}">
+                        <span class="material-symbols-${currentStyle}" 
+                              style="font-variation-settings: 'FILL' ${currentFill}, 'wght' ${currentWeight}, 'GRAD' 0, 'opsz' 24;">
+                            ${iconName}
+                        </span>
+                    </div>
+                    <div class="icon-name">${iconName}</div>
+                `;
+                
+                iconElement.addEventListener('click', () => selectIcon(iconName));
+                iconsGrid.appendChild(iconElement);
+            });
+        }
+
+        function selectIcon(iconName) {
+            selectedIcon = iconName;
+            document.querySelectorAll('.icon-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            addButton.style.display = 'block';
+        }
+
+        function updateSelectedIcon() {
+            if (selectedIcon) {
+                const selectedElement = document.querySelector(`[data-icon="${selectedIcon}"]`);
+                if (selectedElement) {
+                    const iconSpan = selectedElement.querySelector('span');
+                    iconSpan.style.fontVariationSettings = `'FILL' ${currentFill}, 'wght' ${currentWeight}, 'GRAD' 0, 'opsz' ${currentSize}`;
+                }
+            }
+            renderIcons();
+        }
+
+        function addIcon() {
+            if (!selectedIcon) return;
+            
+            // Probeer bericht naar Penpot te sturen
+            if (window.parent && window.parent.postMessage) {
+                window.parent.postMessage({
+                    type: 'add-icon',
+                    data: {
+                        iconName: selectedIcon,
+                        size: currentSize,
+                        weight: currentWeight,
+                        fill: currentFill,
+                        color: '#000000'
+                    }
+                }, '*');
+            } else if (window.penpot && window.penpot.ui && window.penpot.ui.sendMessage) {
+                window.penpot.ui.sendMessage({
+                    type: 'add-icon',
+                    data: {
+                        iconName: selectedIcon,
+                        size: currentSize,
+                        weight: currentWeight,
+                        fill: currentFill,
+                        color: '#000000'
+                    }
+                });
+            }
+        }
+
+        // Initialiseer
+        renderIcons();
+    </script>
     <script src="plugin.js"></script>
 </body>
 </html>
