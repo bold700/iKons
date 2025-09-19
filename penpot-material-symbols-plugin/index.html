@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Symbols</title>
+    <!-- Material Symbols (newer variable fonts) -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    
+    <!-- Material Icons (older fonts with separate filled/outlined variants) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -440,6 +448,15 @@
         function addIcon() {
             if (!selectedIcon) return;
             
+            console.log(`Sending icon data:`, {
+                iconName: selectedIcon,
+                size: currentSize,
+                weight: currentWeight,
+                fill: currentFill,
+                style: currentStyle
+            });
+            console.log(`Fill checkbox checked:`, document.getElementById('fillToggle').checked);
+            
             // Probeer bericht naar Penpot te sturen
             if (window.parent && window.parent.postMessage) {
                 window.parent.postMessage({
@@ -449,7 +466,8 @@
                         size: currentSize,
                         weight: currentWeight,
                         fill: currentFill,
-                        color: '#000000'
+                        color: '#000000',
+                        style: currentStyle
                     }
                 }, '*');
             } else if (window.penpot && window.penpot.ui && window.penpot.ui.sendMessage) {
@@ -460,7 +478,8 @@
                         size: currentSize,
                         weight: currentWeight,
                         fill: currentFill,
-                        color: '#000000'
+                        color: '#000000',
+                        style: currentStyle
                     }
                 });
             }
