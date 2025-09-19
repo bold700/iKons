@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Deployment Opties</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .option {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .option h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        .steps {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+        }
+        .steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        code {
+            background: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Plugin Deployment Opties</h1>
+    
+    <div class="warning">
+        <strong>⚠️ Probleem:</strong> Localhost URLs werken niet in Penpot vanwege CORS beperkingen.
+        Je hebt een publieke URL nodig.
+    </div>
+
+    <div class="option">
+        <h2>🌐 Optie 1: GitHub Pages (Gratis)</h2>
+        <div class="steps">
+            <ol>
+                <li>Maak een GitHub repository aan</li>
+                <li>Upload de plugin bestanden</li>
+                <li>Schakel GitHub Pages in</li>
+                <li>Gebruik: <code>https://username.github.io/repository/manifest.json</code></li>
+            </ol>
+        </div>
+        <p><strong>Voordeel:</strong> Gratis, permanent, betrouwbaar</p>
+    </div>
+
+    <div class="option">
+        <h2>⚡ Optie 2: Netlify Drop (Snelst)</h2>
+        <div class="steps">
+            <ol>
+                <li>Ga naar <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></li>
+                <li>Sleep de hele plugin folder naar de website</li>
+                <li>Krijg direct een URL zoals: <code>https://random-name.netlify.app/manifest.json</code></li>
+                <li>Gebruik deze URL in Penpot</li>
+            </ol>
+        </div>
+        <p><strong>Voordeel:</strong> Binnen 2 minuten klaar</p>
+    </div>
+
+    <div class="option">
+        <h2>🔧 Optie 3: Ngrok Tunnel</h2>
+        <div class="steps">
+            <ol>
+                <li>Installeer ngrok: <code>brew install ngrok</code></li>
+                <li>Start tunnel: <code>ngrok http 8080</code></li>
+                <li>Gebruik de gegenereerde https URL</li>
+            </ol>
+        </div>
+        <p><strong>Voordeel:</strong> Lokale development, maar tijdelijke URL</p>
+    </div>
+
+    <div class="option">
+        <h2>📁 Optie 4: JSFiddle/CodePen</h2>
+        <div class="steps">
+            <ol>
+                <li>Upload bestanden naar JSFiddle of CodePen</li>
+                <li>Krijg een publieke URL</li>
+                <li>Gebruik deze voor testing</li>
+            </ol>
+        </div>
+        <p><strong>Voordeel:</strong> Snel voor prototyping</p>
+    </div>
+
+    <div class="success">
+        <h3>🎯 Aanbeveling: Gebruik Netlify Drop</h3>
+        <p>Dit is de snelste manier om je plugin online te krijgen:</p>
+        <ol>
+            <li>Pak alle bestanden in een ZIP</li>
+            <li>Ga naar <a href="https://app.netlify.com/drop" target="_blank">netlify.com/drop</a></li>
+            <li>Sleep de ZIP erop</li>
+            <li>Gebruik de gegenereerde URL in Penpot</li>
+        </ol>
+    </div>
+
+    <script>
+        // Auto-create download link for plugin files
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadSection = document.createElement('div');
+            downloadSection.className = 'option';
+            downloadSection.innerHTML = `
+                <h2>📦 Plugin Bestanden</h2>
+                <p>Je plugin bestaat uit deze bestanden:</p>
+                <ul>
+                    <li>manifest.json</li>
+                    <li>index.html</li>
+                    <li>plugin.js</li>
+                    <li>icon.svg</li>
+                </ul>
+                <p><strong>Tip:</strong> Zip deze bestanden voor makkelijke upload naar hosting services.</p>
+            `;
+            document.body.appendChild(downloadSection);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "name": "penpot-material-symbols-plugin",
+  "version": "1.0.0",
+  "description": "Material Symbols icon plugin for Penpot - Access Google's comprehensive icon library",
+  "main": "plugin.js",
+  "keywords": [
+    "penpot",
+    "plugin",
+    "material-design",
+    "icons",
+    "material-symbols",
+    "google",
+    "ui",
+    "design"
+  ],
+  "author": "Kenny Timmer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kennytimmer/penpot-material-symbols-plugin"
+  },
+  "penpot": {
+    "name": "Material Symbols",
+    "description": "Access Google's Material Symbols icons directly in Penpot",
+    "version": "1.0.0",
+    "main": "plugin.js",
+    "icon": "icon.svg",
+    "permissions": [
+      "content:write"
+    ],
+    "categories": [
+      "Icons",
+      "Design System", 
+      "Productivity"
+    ]
+  }
+}

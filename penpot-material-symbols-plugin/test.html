@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .test-links a {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .test-links a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Material Symbols Plugin Test</h1>
+    
+    <div class="test-section">
+        <h2>📡 Server Status</h2>
+        <div class="status success">
+            ✅ CORS-enabled server draait op: <strong>http://localhost:8080</strong>
+        </div>
+        <div class="status info">
+            🔗 Plugin URL: <strong>http://localhost:8080/manifest.json</strong>
+        </div>
+        <div class="status success">
+            ✅ Manifest geüpdatet met vereiste Penpot velden
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Test Links</h2>
+        <div class="test-links">
+            <a href="http://localhost:8080/manifest.json" target="_blank">Test manifest.json</a>
+            <a href="http://localhost:8080/index.html" target="_blank">Test Plugin UI</a>
+            <a href="http://localhost:8080/plugin.js" target="_blank">Test plugin.js</a>
+            <a href="http://localhost:8080/icon.svg" target="_blank">Test icon.svg</a>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Plugin Preview</h2>
+        <p>Hier is een preview van hoe je plugin eruit ziet:</p>
+        <iframe src="http://localhost:8080/index.html"></iframe>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Penpot Installatie Stappen</h2>
+        <ol>
+            <li>Open <a href="https://design.penpot.app" target="_blank">Penpot</a></li>
+            <li>Druk <kbd>Ctrl + Alt + P</kbd> (of <kbd>Cmd + Alt + P</kbd> op Mac)</li>
+            <li>Klik "Install from URL"</li>
+            <li>Plak: <code>http://localhost:8080/manifest.json</code></li>
+            <li>Klik "Install"</li>
+            <li>Klik "Open" om de plugin te gebruiken</li>
+        </ol>
+    </div>
+
+        <div class="test-section">
+        <h2>🔧 Debug Info</h2>
+        <div class="status info">
+            <strong>Recente wijzigingen:</strong><br>
+            • Manifest.json aangepast met pluginApiVersion en main: "index.html"<br>
+            • CORS headers toegevoegd aan server<br>
+            • Plugin API verbeterd voor Penpot compatibiliteit
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Test Checklist</h2>
+        <ul>
+            <li>□ Manifest.json laadt correct (check browser network tab)</li>
+            <li>□ Plugin UI opent zonder errors</li>
+            <li>□ Iconen worden weergegeven</li>
+            <li>□ Zoekfunctie werkt</li>
+            <li>□ Stijl selector werkt (Outlined/Rounded/Sharp)</li>
+            <li>□ Opties aanpassen werkt (Fill, Weight, Size)</li>
+            <li>□ Icoon selectie werkt</li>
+            <li>□ "+" knop verschijnt bij selectie</li>
+            <li>□ Icoon wordt toegevoegd aan Penpot canvas</li>
+        </ul>
+    </div>
+
+    <script>
+        // Test of alle bestanden laden
+        async function testFiles() {
+            const files = ['manifest.json', 'index.html', 'plugin.js', 'icon.svg'];
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(`http://localhost:8080/${file}`);
+                    if (response.ok) {
+                        console.log(`✅ ${file} - OK`);
+                    } else {
+                        console.error(`❌ ${file} - Error: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error(`❌ ${file} - Network Error:`, error);
+                }
+            }
+        }
+        
+        testFiles();
+    </script>
+</body>
+</html>
