@@ -1,0 +1,13 @@
+{
+  "pluginApiVersion": "0.0.1",
+  "name": "Material Symbols",
+  "description": "Access Google's Material Symbols icons directly in Penpot. Browse and insert icons from the comprehensive Material Design icon library.",
+  "version": "1.0.0",
+  "author": "Kenny Timmer",
+  "main": "index.html",
+  "icon": "icon.svg",
+  "permissions": [
+    "content:write"
+  ],
+  "host": "penpot"
+}
