@@ -33,44 +33,22 @@ function addIconToCanvas(iconName, size, weight, fill, color, style) {
     textShape.fontSize = size.toString();
     textShape.fills = [{ fillColor: color, fillOpacity: 1 }];
     
-    // Use older Material Icons fonts that have separate filled/outlined variants
+    // Use the correct Material Symbols fonts with proper naming
     let fontFamily;
     
-    if (fill === 1) {
-      // For filled icons, use the base Material Icons font (which is filled by default)
-      if (style === 'rounded') {
-        fontFamily = 'Material Icons Round';
-      } else if (style === 'sharp') {
-        fontFamily = 'Material Icons Sharp';
-      } else {
-        fontFamily = 'Material Icons'; // Base Material Icons is filled
-      }
+    if (style === 'rounded') {
+      fontFamily = 'Material Symbols Rounded';
+    } else if (style === 'sharp') {
+      fontFamily = 'Material Symbols Sharp';
     } else {
-      // For outlined icons, use the outlined variants
-      if (style === 'rounded') {
-        fontFamily = 'Material Icons Round';
-      } else if (style === 'sharp') {
-        fontFamily = 'Material Icons Sharp';
-      } else {
-        fontFamily = 'Material Icons Outlined';
-      }
+      fontFamily = 'Material Symbols Outlined';
     }
     
     textShape.fontFamily = fontFamily;
     
     console.log(`Using font family: ${fontFamily} for fill: ${fill}, style: ${style}`);
     
-    // Debug: Log available properties
-    logTextShapeProperties(textShape);
-    
-    // Try to apply font variation settings using different methods
-    console.log(`Applying font variation settings for fill: ${fill}, weight: ${weight}`);
-    
-    // With older Material Icons fonts, we don't need font variation settings
-    // The fill is controlled by using different font families
-    console.log(`Using older Material Icons approach - no font variation settings needed`);
-    
-    // Try to set font weight if available (though it may not work with older fonts)
+    // Try to set font weight
     try {
       if (textShape.fontWeight !== undefined) {
         textShape.fontWeight = weight.toString();
@@ -78,6 +56,25 @@ function addIconToCanvas(iconName, size, weight, fill, color, style) {
       }
     } catch (weightError) {
       console.log(`Could not set fontWeight:`, weightError.message);
+    }
+    
+    // Try to apply font variation settings for Material Symbols
+    try {
+      // Material Symbols fonts support font-variation-settings
+      const fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' 0, 'opsz' ${size}`;
+      
+      // Try different ways to set font variation settings
+      if (textShape.fontVariationSettings !== undefined) {
+        textShape.fontVariationSettings = fontVariationSettings;
+        console.log(`Set fontVariationSettings to: ${fontVariationSettings}`);
+      } else if (textShape.style !== undefined) {
+        textShape.style = textShape.style || {};
+        textShape.style.fontVariationSettings = fontVariationSettings;
+        console.log(`Set style.fontVariationSettings to: ${fontVariationSettings}`);
+      }
+      
+    } catch (variationError) {
+      console.log(`Could not set font variation settings:`, variationError.message);
     }
     
     // Position the text in the center of the viewport
@@ -135,6 +132,19 @@ function addIconAsText(iconName, size, weight, fill, color, style) {
                       style === 'sharp' ? 'Material Symbols Sharp' : 
                       'Material Symbols Outlined';
     textShape.fontFamily = fontFamily;
+    
+    // Apply font variation settings for fill and weight
+    try {
+      const fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' 0, 'opsz' ${size}`;
+      if (textShape.fontVariationSettings !== undefined) {
+        textShape.fontVariationSettings = fontVariationSettings;
+      } else if (textShape.style !== undefined) {
+        textShape.style = textShape.style || {};
+        textShape.style.fontVariationSettings = fontVariationSettings;
+      }
+    } catch (error) {
+      console.log(`Could not set font variation settings in fallback:`, error.message);
+    }
     
     // Position the text in the center of the viewport
     try {
