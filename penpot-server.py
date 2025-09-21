@@ -49,7 +49,6 @@ class PenpotCORSHandler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     PORT = 3001
-    os.chdir('/Users/kennytimmer/Documents/GitHub/iKons/penpot-material-symbols-plugin')
     
     server = HTTPServer(('0.0.0.0', PORT), PenpotCORSHandler)
     print(f'🚀 Penpot-compatible server running at:')
