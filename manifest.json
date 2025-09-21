@@ -4,7 +4,7 @@
   "description": "Access Google's Material Symbols icons directly in Penpot. Browse and insert icons from the comprehensive Material Design icon library.",
   "version": "1.0.0",
   "author": "Kenny Timmer",
-  "main": "index.html",
+  "main": "plugin.js",
   "icon": "icon.svg",
   "permissions": [
     "content:write"
