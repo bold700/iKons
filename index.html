@@ -951,62 +951,74 @@
                 size: currentSize,
                 weight: currentWeight,
                 fill: currentFill,
-                style: currentStyle
+                style: currentStyle,
+                color: currentColor
             });
-            console.log(`Fill checkbox checked:`, document.getElementById('fillToggle').checked);
             
             // Update button text to show loading
             const addBtn = document.getElementById('addButton');
-            const originalText = addBtn.textContent;
-            addBtn.textContent = '...';
+            addBtn.innerHTML = '...';
             addBtn.disabled = true;
             
-            // Probeer bericht naar Penpot te sturen
-            if (window.parent && window.parent.postMessage) {
-                window.parent.postMessage({
-                    type: 'add-icon',
-                    data: {
-                        iconName: selectedIcon,
-                        size: currentSize,
-                        weight: currentWeight,
-                        fill: currentFill,
-                        color: currentColor,
-                        style: currentStyle,
-                        lineHeight: 1,
-                        fontSize: currentSize
-                    }
-                }, '*');
-            } else if (window.penpot && window.penpot.ui && window.penpot.ui.sendMessage) {
-                window.penpot.ui.sendMessage({
-                    type: 'add-icon',
-                    data: {
-                        iconName: selectedIcon,
-                        size: currentSize,
-                        weight: currentWeight,
-                        fill: currentFill,
-                        color: currentColor,
-                        style: currentStyle,
-                        lineHeight: 1,
-                        fontSize: currentSize
-                    }
-                });
+            // Send message to Penpot plugin
+            try {
+                if (window.parent && window.parent.postMessage) {
+                    window.parent.postMessage({
+                        type: 'add-icon',
+                        data: {
+                            iconName: selectedIcon,
+                            size: currentSize,
+                            weight: currentWeight,
+                            fill: currentFill,
+                            color: currentColor,
+                            style: currentStyle
+                        }
+                    }, '*');
+                    console.log('Message sent via postMessage');
+                } else {
+                    console.error('No parent window available for postMessage');
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+                
+                // Reset button on error
+                addBtn.innerHTML = '✗ Error';
+                addBtn.style.background = '#dc3545';
+                
+                setTimeout(() => {
+                    addBtn.innerHTML = '+';
+                    addBtn.style.background = '#007bff';
+                    addBtn.disabled = false;
+                }, 2000);
             }
         }
 
         // Listen for messages from Penpot
         window.addEventListener('message', (event) => {
+            console.log('Received message:', event.data);
+            
             if (event.data && event.data.type === 'icon-added') {
                 const addBtn = document.getElementById('addButton');
-                if (event.data.data.success) {
-                    // Just reset button for both add and replace
-                    addBtn.textContent = '+';
+                
+                if (event.data.data && event.data.data.success) {
+                    // Success - reset button
+                    addBtn.innerHTML = '✓';
+                    addBtn.style.background = '#28a745';
                     addBtn.disabled = false;
+                    
+                    // Reset after short delay
+                    setTimeout(() => {
+                        addBtn.innerHTML = '+';
+                        addBtn.style.background = '#007bff';
+                    }, 1000);
+                    
                 } else {
-                    addBtn.textContent = '✗ Error';
+                    // Error - show error state
+                    addBtn.innerHTML = '✗ Error';
                     addBtn.style.background = '#dc3545';
                     
                     setTimeout(() => {
-                        addBtn.textContent = '+';
+                        addBtn.innerHTML = '+';
                         addBtn.style.background = '#007bff';
                         addBtn.disabled = false;
                     }, 2000);
