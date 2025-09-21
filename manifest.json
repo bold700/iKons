@@ -5,5 +5,9 @@
   "author": "Kenny Timmer",
   "main": "index.html",
   "code": "plugin.js",
-  "icon": "icon.svg"
+  "icon": "icon.svg",
+  "permissions": [
+    "content:read",
+    "content:write"
+  ]
 }
