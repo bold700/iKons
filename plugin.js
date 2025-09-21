@@ -1,294 +1,225 @@
 // Material Symbols Plugin for Penpot
-// Comprehensive list of popular Material Symbols icons
-const MATERIAL_SYMBOLS = [
-    // Navigation & Actions
-    'home', 'search', 'menu', 'close', 'arrow_back', 'arrow_forward', 'arrow_upward', 'arrow_downward',
-    'chevron_left', 'chevron_right', 'expand_more', 'expand_less', 'add', 'remove', 'edit', 'delete',
-    'done', 'clear', 'check', 'cancel', 'refresh', 'sync', 'undo', 'redo',
-    
-    // Communication & Social
-    'phone', 'email', 'message', 'chat', 'comment', 'share', 'thumb_up', 'thumb_down',
-    'favorite', 'star', 'bookmark', 'notifications', 'campaign', 'send', 'reply', 'forward',
-    
-    // Media & Content
-    'play_arrow', 'pause', 'stop', 'skip_next', 'skip_previous', 'volume_up', 'volume_down', 'volume_off',
-    'image', 'photo_camera', 'videocam', 'mic', 'headset', 'music_note', 'movie', 'library_music',
-    
-    // Files & Documents
-    'folder', 'folder_open', 'insert_drive_file', 'description', 'article', 'note', 'assignment',
-    'download', 'upload', 'cloud', 'cloud_download', 'cloud_upload', 'attach_file', 'link',
-    
-    // Shopping & Commerce
-    'shopping_cart', 'shopping_bag', 'store', 'payment', 'credit_card', 'local_atm', 'receipt',
-    'local_shipping', 'inventory', 'sell', 'monetization_on', 'trending_up', 'trending_down',
-    
-    // Technology & Devices
-    'computer', 'phone_iphone', 'tablet', 'laptop', 'desktop_windows', 'keyboard', 'mouse',
-    'headphones', 'speaker', 'tv', 'watch', 'memory', 'storage', 'wifi', 'bluetooth',
-    
-    // Transportation
-    'directions_car', 'directions_bus', 'directions_subway', 'flight', 'train', 'directions_bike',
-    'directions_walk', 'local_taxi', 'motorcycle', 'sailing', 'map', 'navigation', 'my_location',
-    
-    // Places & Travel
-    'place', 'hotel', 'restaurant', 'local_cafe', 'local_hospital', 'school', 'work',
-    'business', 'apartment', 'house', 'park', 'beach_access', 'terrain', 'explore',
-    
-    // Time & Calendar
-    'schedule', 'today', 'event', 'calendar_month', 'access_time', 'timer', 'alarm',
-    'watch_later', 'history', 'update', 'pending', 'hourglass_empty',
-    
-    // People & Social
-    'person', 'people', 'group', 'face', 'account_circle', 'supervisor_account', 'contact_mail',
-    'contacts', 'family_restroom', 'child_care', 'elderly', 'accessibility',
-    
-    // Security & Privacy
-    'lock', 'lock_open', 'security', 'visibility', 'visibility_off', 'vpn_key', 'fingerprint',
-    'shield', 'verified_user', 'admin_panel_settings', 'privacy_tip',
-    
-    // Settings & Tools
-    'settings', 'tune', 'build', 'construction', 'handyman', 'engineering', 'science',
-    'biotech', 'psychology', 'auto_fix_high', 'colorize', 'palette', 'brush',
-    
-    // Health & Fitness
-    'fitness_center', 'sports', 'pool', 'spa', 'self_improvement', 'sports_gymnastics',
-    'directions_run', 'sports_soccer', 'sports_basketball', 'sports_tennis',
-    
-    // Weather & Nature
-    'wb_sunny', 'wb_cloudy', 'cloud', 'umbrella', 'ac_unit', 'whatshot', 'eco',
-    'local_florist', 'grass', 'forest', 'water_drop', 'waves', 'thunderstorm',
-    
-    // Business & Finance
-    'business_center', 'work', 'trending_up', 'analytics', 'bar_chart', 'pie_chart',
-    'show_chart', 'account_balance', 'savings', 'request_quote', 'calculate',
-    
-    // Education & Learning
-    'school', 'menu_book', 'library_books', 'quiz', 'psychology', 'science', 'functions',
-    'calculate', 'translate', 'language', 'public', 'history_edu',
-    
-    // Gaming & Entertainment
-    'sports_esports', 'casino', 'games', 'celebration', 'party_mode', 'cake', 'gift',
-    'balloon', 'confetti', 'festival', 'nightlife', 'local_bar',
-    
-    // Miscellaneous
-    'lightbulb', 'flash_on', 'battery_full', 'signal_wifi_4_bar', 'network_cell',
-    'qr_code', 'barcode', 'print', 'scanner', 'crop', 'rotate_right', 'flip'
-];
+// Based on the working Icoonies plugin structure
 
-class MaterialSymbolsPlugin {
-    constructor() {
-        this.selectedIcon = null;
-        this.currentStyle = 'outlined';
-        this.currentOptions = {
-            fill: 0,
-            weight: 400,
-            size: 24,
-            grade: 0,
-            opticalSize: 24
-        };
-        
-        this.init();
-    }
-    
-    init() {
-        this.setupEventListeners();
-        this.renderIcons();
-        this.setupPenpotAPI();
-    }
-    
-    setupEventListeners() {
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            this.filterIcons(e.target.value);
-        });
-        
-        // Style selector
-        document.querySelectorAll('.style-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.currentStyle = e.target.dataset.style;
-                this.renderIcons();
-            });
-        });
-        
-        // Options controls
-        const fillSlider = document.getElementById('fillSlider');
-        const weightSelect = document.getElementById('weightSelect');
-        const sizeInput = document.getElementById('sizeInput');
-        
-        fillSlider.addEventListener('input', (e) => {
-            this.currentOptions.fill = parseFloat(e.target.value);
-            this.updateIconStyles();
-        });
-        
-        weightSelect.addEventListener('change', (e) => {
-            this.currentOptions.weight = parseInt(e.target.value);
-            this.updateIconStyles();
-        });
-        
-        sizeInput.addEventListener('input', (e) => {
-            this.currentOptions.size = parseInt(e.target.value);
-            this.currentOptions.opticalSize = parseInt(e.target.value);
-            this.updateIconStyles();
-        });
-        
-        // Add button
-        const addButton = document.getElementById('addButton');
-        addButton.addEventListener('click', () => {
-            if (this.selectedIcon) {
-                this.addIconToPenpot(this.selectedIcon);
-            }
-        });
-    }
-    
-    setupPenpotAPI() {
-        // Initialize Penpot plugin API when available
-        if (typeof penpot !== 'undefined') {
-            console.log('Penpot API available');
-            
-            // Listen for messages from Penpot
-            penpot.ui.onMessage((message) => {
-                console.log('Received message:', message);
-            });
-            
-        } else {
-            console.log('Running in standalone mode (no Penpot API)');
-        }
-    }
-    
-    renderIcons() {
-        const iconsGrid = document.getElementById('iconsGrid');
-        iconsGrid.innerHTML = '';
-        
-        MATERIAL_SYMBOLS.forEach(iconName => {
-            const iconItem = this.createIconElement(iconName);
-            iconsGrid.appendChild(iconItem);
-        });
-        
-        this.updateIconStyles();
-    }
-    
-    createIconElement(iconName) {
-        const iconItem = document.createElement('div');
-        iconItem.className = 'icon-item';
-        iconItem.dataset.iconName = iconName;
-        
-        const iconSpan = document.createElement('span');
-        iconSpan.className = `material-symbols material-symbols-${this.currentStyle}`;
-        iconSpan.textContent = iconName;
-        
-        const iconNameSpan = document.createElement('span');
-        iconNameSpan.className = 'icon-name';
-        iconNameSpan.textContent = iconName.replace(/_/g, ' ');
-        
-        iconItem.appendChild(iconSpan);
-        iconItem.appendChild(iconNameSpan);
-        
-        iconItem.addEventListener('click', () => {
-            this.selectIcon(iconItem, iconName);
-        });
-        
-        return iconItem;
-    }
-    
-    selectIcon(iconElement, iconName) {
-        // Remove previous selection
-        document.querySelectorAll('.icon-item').forEach(item => {
-            item.classList.remove('selected');
-        });
-        
-        // Select current icon
-        iconElement.classList.add('selected');
-        this.selectedIcon = iconName;
-        
-        // Show add button
-        const addButton = document.getElementById('addButton');
-        addButton.classList.add('visible');
-    }
-    
-    updateIconStyles() {
-        const icons = document.querySelectorAll('.material-symbols');
-        icons.forEach(icon => {
-            icon.style.setProperty('--fill', this.currentOptions.fill);
-            icon.style.setProperty('--weight', this.currentOptions.weight);
-            icon.style.setProperty('--grade', this.currentOptions.grade);
-            icon.style.setProperty('--optical-size', this.currentOptions.opticalSize);
-            icon.style.fontSize = `${this.currentOptions.size}px`;
-        });
-    }
-    
-    filterIcons(searchTerm) {
-        const iconItems = document.querySelectorAll('.icon-item');
-        const lowerSearchTerm = searchTerm.toLowerCase();
-        let visibleCount = 0;
-        
-        iconItems.forEach(item => {
-            const iconName = item.dataset.iconName;
-            const isVisible = iconName.toLowerCase().includes(lowerSearchTerm);
-            item.style.display = isVisible ? 'flex' : 'none';
-            if (isVisible) visibleCount++;
-        });
-        
-        // Show no results message if needed
-        const iconsGrid = document.getElementById('iconsGrid');
-        let noResultsMsg = iconsGrid.querySelector('.no-results');
-        
-        if (visibleCount === 0 && searchTerm.trim() !== '') {
-            if (!noResultsMsg) {
-                noResultsMsg = document.createElement('div');
-                noResultsMsg.className = 'no-results';
-                noResultsMsg.textContent = 'No icons found. Try a different search term.';
-                iconsGrid.appendChild(noResultsMsg);
-            }
-        } else if (noResultsMsg) {
-            noResultsMsg.remove();
-        }
-    }
-    
-    addIconToPenpot(iconName) {
-        if (typeof penpot === 'undefined') {
-            console.warn('Penpot API not available - running in standalone mode');
-            alert(`Would add icon: ${iconName} (${this.currentStyle} style)`);
-            return;
-        }
-        
-        try {
-            console.log(`Adding icon: ${iconName} with style: ${this.currentStyle}`);
-            
-            // Send message to Penpot parent window
-            if (penpot.ui && penpot.ui.sendMessage) {
-                penpot.ui.sendMessage({
-                    type: 'create-text',
-                    content: iconName,
-                    fontFamily: `Material Symbols ${this.currentStyle.charAt(0).toUpperCase() + this.currentStyle.slice(1)}`,
-                    fontSize: this.currentOptions.size,
-                    fontWeight: this.currentOptions.weight,
-                    style: this.currentStyle,
-                    options: this.currentOptions
-                });
-            }
-            
-            console.log(`Successfully requested icon creation: ${iconName}`);
-            
-        } catch (error) {
-            console.error('Error adding icon to Penpot:', error);
-            alert(`Error adding icon: ${error.message}`);
-        }
-    }
-}
-
-// Initialize plugin when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new MaterialSymbolsPlugin();
+// Initialize the plugin UI
+penpot.ui.open("Material Symbols Plugin", "", {
+  width: 500,
+  height: 600,
 });
 
-// Handle messages from Penpot if needed
-if (typeof penpot !== 'undefined') {
-    penpot.ui.onMessage((message) => {
-        if (message.type === 'plugin-ready') {
-            console.log('Material Symbols plugin ready');
-        }
+// Listen for messages from the UI
+penpot.ui.onMessage((message) => {
+  if (message.type === 'add-icon') {
+    const { iconName, size, weight, fill, color, style, lineHeight, fontSize } = message.data;
+    addIconToCanvas(iconName, size, weight, fill, color, style, lineHeight, fontSize);
+  }
+});
+
+// Function to add icon to canvas
+function addIconToCanvas(iconName, size, weight, fill, color, style, lineHeight, fontSize) {
+  try {
+    console.log(`Attempting to add icon: ${iconName} with fill: ${fill}, style: ${style}, weight: ${weight}, lineHeight: ${lineHeight}`);
+    
+    // Check if there's a selected text element to replace
+    const selection = penpot.selection;
+    let textShape = null;
+    let isReplacing = false;
+    
+    if (selection && selection.length > 0) {
+      // Check if the selected element is a text element
+      const selectedElement = selection[0];
+      if (selectedElement && selectedElement.type === 'text') {
+        console.log('Replacing existing text element');
+        textShape = selectedElement;
+        isReplacing = true;
+        
+        // Update the text content
+        textShape.characters = iconName;
+      }
+    }
+    
+    // If no suitable element is selected, create a new one
+    if (!textShape) {
+      console.log('Creating new text element');
+      textShape = penpot.createText(iconName);
+      isReplacing = false;
+    }
+    
+    if (!textShape) {
+      console.error('Failed to create text shape');
+      return;
+    }
+    
+    // Set basic text properties
+    textShape.fontSize = (fontSize || size).toString();
+    textShape.fills = [{ fillColor: color, fillOpacity: 1 }];
+    
+    // Set line height to match font size for perfect square
+    try {
+      if (textShape.lineHeight !== undefined && lineHeight !== undefined) {
+        textShape.lineHeight = lineHeight.toString();
+        console.log(`Set lineHeight to: ${lineHeight}`);
+      }
+    } catch (lineHeightError) {
+      console.log(`Could not set lineHeight:`, lineHeightError.message);
+    }
+    
+    // Use the correct Material Symbols fonts with proper naming
+    let fontFamily;
+    
+    if (style === 'rounded') {
+      fontFamily = 'Material Symbols Rounded';
+    } else if (style === 'sharp') {
+      fontFamily = 'Material Symbols Sharp';
+    } else {
+      fontFamily = 'Material Symbols Outlined';
+    }
+    
+    textShape.fontFamily = fontFamily;
+    
+    console.log(`Using font family: ${fontFamily} for fill: ${fill}, style: ${style}`);
+    
+    // Try to set font weight
+    try {
+      if (textShape.fontWeight !== undefined) {
+        textShape.fontWeight = weight.toString();
+        console.log(`Set fontWeight to: ${weight}`);
+      }
+    } catch (weightError) {
+      console.log(`Could not set fontWeight:`, weightError.message);
+    }
+    
+    // Try to apply font variation settings for Material Symbols
+    try {
+      // Material Symbols fonts support font-variation-settings
+      const fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' 0, 'opsz' ${size}`;
+      
+      // Try different ways to set font variation settings
+      if (textShape.fontVariationSettings !== undefined) {
+        textShape.fontVariationSettings = fontVariationSettings;
+        console.log(`Set fontVariationSettings to: ${fontVariationSettings}`);
+      } else if (textShape.style !== undefined) {
+        textShape.style = textShape.style || {};
+        textShape.style.fontVariationSettings = fontVariationSettings;
+        console.log(`Set style.fontVariationSettings to: ${fontVariationSettings}`);
+      }
+      
+    } catch (variationError) {
+      console.log(`Could not set font variation settings:`, variationError.message);
+    }
+    
+    // Position the text (only if creating new, keep position if replacing)
+    if (!isReplacing) {
+      try {
+        const viewport = penpot.viewport;
+        textShape.x = viewport.center.x - size / 2;
+        textShape.y = viewport.center.y - size / 2;
+      } catch (positionError) {
+        console.warn('Could not position text:', positionError);
+        textShape.x = 100;
+        textShape.y = 100;
+      }
+    }
+    
+    // Select the newly created shape
+    penpot.selection = [textShape];
+    
+    const actionText = isReplacing ? 'replaced' : 'added';
+    console.log(`Successfully ${actionText} icon: ${iconName} as text with font family: ${fontFamily}`);
+    
+    // Send success message back to UI
+    penpot.ui.sendMessage({
+      type: 'icon-added',
+      data: { iconName, success: true, replaced: isReplacing }
     });
+    
+  } catch (error) {
+    console.error('Error adding icon to canvas:', error);
+    
+    // Send error message back to UI
+    penpot.ui.sendMessage({
+      type: 'icon-added',
+      data: { iconName, success: false, error: String(error) }
+    });
+  }
 }
+
+// Fallback function for text-based approach
+function addIconAsText(iconName, size, weight, fill, color, style) {
+  try {
+    console.log(`Fallback: Adding icon as text: ${iconName}`);
+    
+    // Create a text shape with the icon
+    const textShape = penpot.createText(iconName);
+    
+    if (!textShape) {
+      console.error('Failed to create text shape');
+      return;
+    }
+    
+    // Set basic text properties
+    textShape.fontSize = size.toString();
+    textShape.fills = [{ fillColor: color, fillOpacity: 1 }];
+    
+    // Set font family to Material Symbols
+    const fontFamily = style === 'rounded' ? 'Material Symbols Rounded' : 
+                      style === 'sharp' ? 'Material Symbols Sharp' : 
+                      'Material Symbols Outlined';
+    textShape.fontFamily = fontFamily;
+    
+    // Apply font variation settings for fill and weight
+    try {
+      const fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' 0, 'opsz' ${size}`;
+      if (textShape.fontVariationSettings !== undefined) {
+        textShape.fontVariationSettings = fontVariationSettings;
+      } else if (textShape.style !== undefined) {
+        textShape.style = textShape.style || {};
+        textShape.style.fontVariationSettings = fontVariationSettings;
+      }
+    } catch (error) {
+      console.log(`Could not set font variation settings in fallback:`, error.message);
+    }
+    
+    // Position the text in the center of the viewport
+    try {
+      const viewport = penpot.viewport;
+      textShape.x = viewport.center.x - size / 2;
+      textShape.y = viewport.center.y - size / 2;
+    } catch (positionError) {
+      console.warn('Could not position text:', positionError);
+      textShape.x = 100;
+      textShape.y = 100;
+    }
+    
+    // Select the newly created shape
+    penpot.selection = [textShape];
+    
+    console.log(`Successfully added icon as text: ${iconName}`);
+    
+    // Send success message back to UI
+    penpot.ui.sendMessage({
+      type: 'icon-added',
+      data: { iconName, success: true }
+    });
+    
+  } catch (error) {
+    console.error('Error adding icon as text:', error);
+    
+    // Send error message back to UI
+                penpot.ui.sendMessage({
+      type: 'icon-added',
+      data: { iconName, success: false, error: String(error) }
+    });
+  }
+}
+
+// Function to log available textShape properties for debugging
+function logTextShapeProperties(textShape) {
+  console.log('Available textShape properties:', Object.getOwnPropertyNames(textShape));
+  console.log('textShape prototype:', Object.getOwnPropertyNames(Object.getPrototypeOf(textShape)));
+}
+
+// Send initial message to UI when plugin loads
+penpot.ui.sendMessage({
+  type: 'plugin-ready'
+});
